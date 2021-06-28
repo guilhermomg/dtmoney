@@ -1,10 +1,12 @@
-import { useContext } from "react";
-import { useTransactions } from "../../hooks/useTransactions";
-
+import React, { useEffect } from "react";
+import { api } from "../../services/api";
 import { Container } from "./styles";
 
 export function TransactionsTable() {
-    const { transactions } = useTransactions();
+    useEffect(() => {
+        api.get('transactions')
+            .then(response => console.log(response.data))
+    }, []);
 
     return (
         <Container>
@@ -18,23 +20,30 @@ export function TransactionsTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {transactions.map(transaction => (
-                        <tr key={transaction.id}>
-                            <td>{transaction.title}</td>
-                            <td className={transaction.type}>
-                                {new Intl.NumberFormat('pt-BR', {
-                                    style: 'currency',
-                                    currency: 'BRL'
-                                }).format(transaction.amount)}
-                            </td>
-                            <td>{transaction.category}</td>
-                            <td>
-                                {new Intl.DateTimeFormat('pt-BR').format(
-                                    new Date(transaction.createdAt)
-                                )}
-                            </td>
-                        </tr>
-                    ))}
+                    <tr>
+                        <td>Desenvolvimento de website</td>
+                        <td className="deposit">R$12.000,00</td>
+                        <td>Desenvolvimento</td>
+                        <td>01/04/2021</td>
+                    </tr>
+                    <tr>
+                        <td>Hamburguer</td>
+                        <td className="withdraw">- R$59,00</td>
+                        <td>Alimentação</td>
+                        <td>02/04/2021</td>
+                    </tr>
+                    <tr>
+                        <td>Aluguel do apartamento</td>
+                        <td className="withdraw">- R$1.200</td>
+                        <td>Casa</td>
+                        <td>03/04/2021</td>
+                    </tr>
+                    <tr>
+                        <td>Venda do Computador</td>
+                        <td className="deposit">R$5.400</td>
+                        <td>Venda</td>
+                        <td>12/04/2021</td>
+                    </tr>
                 </tbody>
             </table>
         </Container>
